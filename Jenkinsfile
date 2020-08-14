@@ -1,18 +1,28 @@
 
-node {
-
-    checkout scm
- 
-   
-    agent {
-    label 'docker' 
-  }
-
-    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-
-        def customImage = docker.build("moutusilayek/mouimage")
-
-        /* Push the container to the custom Registry */
-        customImage.push()
+pipeline {
+    agent { label 'dockerserver' } // if you don't have other steps, 'any' agent works
+    stages {
+        stage('Back-end') {
+            agent {
+                docker {
+                  label 'dockerserver'  // both label and image
+                  image 'maven:3-alpine'
+                }
+            }
+            steps {
+                sh 'mvn --version'
+            }
+        }
+        stage('Front-end') {
+            agent {
+              docker {
+                label 'dockerserver'  // both label and image
+                image 'node:7-alpine' 
+              }
+            }
+            steps {
+                sh 'node --version'
+            }
+        }
     }
 }
