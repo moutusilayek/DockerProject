@@ -1,6 +1,12 @@
+
 node {
 
     checkout scm
+ 
+   
+    agent {
+    label 'docker' 
+  }
 
     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
 
