@@ -1,51 +1,12 @@
-pipeline {  
-agent any
-stages {
-    stage('Preperation') { 
-     steps{
-       
-    withMaven(
-        // Maven installation declared in the Jenkins "Global Tool Configuration"
-        maven: 'MAVEN_HOME'
-        
-        ) {
+node {
 
-      // Run the maven build
-      sh "mvn clean"
+    checkout scm
 
-    } 
+    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
 
-     
-     }
-       
+        def customImage = docker.build("moutusilayek/mouimage")
+
+        /* Push the container to the custom Registry */
+        customImage.push()
     }
-    stage('Build') { 
-    steps{
-         withMaven(
-        // Maven installation declared in the Jenkins "Global Tool Configuration"
-        maven: 'MAVEN_HOME'
-        
-        ) {
-
-      // Run the maven build
-      sh "mvn test"
-
-    } 
-        }
-    }
-    stage('Package') { 
-    steps{
-         withMaven(
-        // Maven installation declared in the Jenkins "Global Tool Configuration"
-        maven: 'MAVEN_HOME'
-        
-        ) {
-
-      // Run the maven build
-      sh "mvn package"
-
-    } 
-    }
-}
-}
 }
