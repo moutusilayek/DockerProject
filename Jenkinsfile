@@ -1,4 +1,4 @@
-export PATH=/usr/local/bin:$PATH
+
 node {
 
     checkout scm
