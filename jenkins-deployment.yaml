@@ -1,0 +1,64 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+     name: jenkins
+     namespace: devops-314243
+spec:
+  replicas: 1
+  selector:
+       matchLabels:
+          app: jenkins
+  template:
+       metadata:
+          labels:
+            app: jenkins
+       spec:
+          serviceAccountName: jenkins-account
+
+
+          containers:
+             - name: jenkins
+               image: jit2600/jenkins-docker:1.0
+               resources:
+                requests:
+                   cpu: 250m
+                   memory: 500Mi
+                limits:
+                   cpu: 1000m
+                   memory: 2Gi
+
+               ports:
+                 - containerPort: 8080
+               securityContext:
+                   allowPrivilegeEscalation: false
+                   runAsUser: 0
+               volumeMounts:
+                - name: jenkins-home
+                  mountPath: /var/jenkins_home/
+                - mountPath: /var/run/docker.sock
+                  name: docker-sock-volume
+
+          volumes:
+            - name: jenkins-home
+            - name: docker-sock-volume
+              hostPath:
+                path: /var/run/docker.sock
+                type: File
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+   name: jenkins
+   namespace: devops-314243
+spec:
+   type: LoadBalancer
+   ports:
+     - port: 8080
+
+   selector:
+       app: jenkins
