@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mouimage
+spec:
+  selector:
+    matchLabels:
+      app: mouimage
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mouimage
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+      - name: dockerproject
+        image: index.docker.io/moutusilayek/dockerproject:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+          - name: mysecret
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mouimage
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8080
+  selector:
+    app: mouimage
