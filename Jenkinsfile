@@ -18,10 +18,7 @@ pipeline {
         } 
         }
         
-        stage ("deploy to aks){
-            
-            
-        }
+        
                }
 
     
