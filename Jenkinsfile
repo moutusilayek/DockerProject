@@ -3,9 +3,10 @@ pipeline {
     agent any
     
     stages {
-        stage ("check out code") {
-            
-            checkout scm
+        stage("Checkout code") {
+            steps {
+                checkout scm
+            }
         }
         
         
