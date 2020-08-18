@@ -8,15 +8,19 @@ pipeline {
             checkout scm
         }
         
-        stage ("build image"){
-           docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-
-           def customImage = docker.build("moutusilayek/mouimage")
-
-           /* Push the container to the custom Registry */
-          customImage.push()
+        
+        
+        
+         stage("Build Push image") {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                            def customImage = docker.build("moutusilayek/mouimage")
+                           customImage.push()
+                    }
+                }
+            }
         } 
-        }
         
         
                }
