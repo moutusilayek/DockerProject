@@ -32,8 +32,8 @@ pipeline {
             steps {
                 
                 script {
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
-                docker.withRegistry( "", MY_NEXUS ) {
+                    dockerImage = docker.build mounexus + ":$BUILD_NUMBER"
+                docker.withRegistry( registry , MY_NEXUS ) {
                 dockerImage.push()
               }
                 }
