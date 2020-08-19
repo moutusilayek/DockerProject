@@ -2,6 +2,11 @@
 pipeline {
     agent any
     
+     environment {
+        registry = "20.56.195.100:8081/mounexus"
+        MY_NEXUS = credentials('nexus')
+    }
+    
     stages {
         stage("Checkout code") {
             steps {
@@ -22,6 +27,15 @@ pipeline {
                 }
             }
         } 
+        
+        stage('image push to nexus') {
+            steps {
+                dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                docker.withRegistry( registry, MY_NEXUS ) {
+                dockerImage.push()
+              }
+            }
+        }
         
         
         
