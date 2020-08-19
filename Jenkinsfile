@@ -31,12 +31,9 @@ pipeline {
         stage('image push to nexus') {
             steps {
                 
-                script {
-                    dockerImage = docker.build "mounexus/mouinage" + ":$BUILD_NUMBER"
-                docker.withRegistry( registry , MY_NEXUS ) {
-                dockerImage.push()
-              }
-                }
+                sh 'docker login -u admin -p admin http://20.56.195.100:8081/mou-nexus'
+                sh  'docker build -t mounexus/mouimage:latest'
+                sh 'docker push http://20.56.195.100:8081/mou-nexus/mounexus/mouimage:latest'
             }
         }
         
