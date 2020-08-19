@@ -3,7 +3,7 @@ pipeline {
     agent any
     
      environment {
-        registry = "http://20.56.195.100:8081/mounexus"
+        registry = "http://20.56.195.100:8081/mou-nexus"
         MY_NEXUS = credentials('nexus')
     }
     
