@@ -32,7 +32,7 @@ pipeline {
             steps {
                 
                 script {
-                    dockerImage = docker.build mounexus + ":$BUILD_NUMBER"
+                    dockerImage = docker.build "mounexus/mouinage" + ":$BUILD_NUMBER"
                 docker.withRegistry( registry , MY_NEXUS ) {
                 dockerImage.push()
               }
