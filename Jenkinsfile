@@ -3,7 +3,7 @@ pipeline {
     agent any
     
      environment {
-        registry = "http://20.56.195.100:8082"
+        registry = "http://20.56.195.100:8081/mou-nexus"
         MY_NEXUS = credentials('nexus')
     }
     
@@ -31,7 +31,7 @@ pipeline {
         stage('image push to nexus') {
             steps {
                 
-                sh 'docker login -u admin -p admin http://20.56.195.100:8082/mou-nexus'
+                sh 'docker login -u admin -p admin http://20.56.195.100:8082'
                 sh  'docker build -t mounexus/mouimage:latest'
                 sh 'docker push http://20.56.195.100:8082/mou-nexus/mounexus/mouimage:latest'
             }
