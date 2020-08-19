@@ -3,7 +3,7 @@ pipeline {
     agent any
     
      environment {
-        registry = "20.56.195.100:8081/mounexus"
+        registry = "http://20.56.195.100:8081/mounexus"
         MY_NEXUS = credentials('nexus')
     }
     
@@ -33,7 +33,7 @@ pipeline {
                 
                 script {
                     dockerImage = docker.build registry + ":$BUILD_NUMBER"
-                docker.withRegistry( registry, MY_NEXUS ) {
+                docker.withRegistry( "", MY_NEXUS ) {
                 dockerImage.push()
               }
                 }
