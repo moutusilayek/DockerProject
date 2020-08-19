@@ -1,0 +1,51 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: jira
+  name: jira
+spec:
+
+  selector:
+       matchLabels:
+          app: jira
+  template:
+    metadata:
+      labels:
+        app: jira
+      name: jira
+    spec:
+      containers:
+        - name: jira
+          image: "atlassian/jira-software:8.0.3-jdk8"
+          resources:
+                requests:
+                   cpu: 250m
+                   memory: 500Mi
+                limits:
+                   cpu: 1000m
+                   memory: 2Gi
+          volumeMounts:
+            - name: "jira-home"
+              mountPath: /opt/jira-home
+      volumes:
+        - name: "jira-home"
+          emptyDir: {}
+
+
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: jira
+  name: jira
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: jira
