@@ -16,7 +16,7 @@ pipeline {
         
         
         
-        
+        try{
          stage("Build Push image") {
             steps {
                 script {
@@ -27,15 +27,22 @@ pipeline {
                 }
             }
         } 
-        
-        stage('image push to nexus') {
-            steps {
-                
-                sh 'docker login -u admin -p admin http://20.56.195.100:8081'
-                sh  'docker build -t mounexus/mouimage:latest'
-                sh 'docker push http://20.56.195.100:8082/mou-nexus/mounexus/mouimage:latest'
-            }
+        } catch(e){
+              def project = jiraGetProject idOrKey: 'JIR', site: 'mou-jira-site'
+            echo project.data.toString()
+            def testIssue1 = [fields: [ project: [id: '10000'],
+                                        summary: 'New Bug Created from Jenkins.',
+                                        description: 'Docker Login has problem',
+                                        issuetype: [name: 'Bug']]]
+            def testIssues = [issueUpdates: [testIssue1]]
+            response = jiraNewIssues issues: testIssues, site: 'mou-jira-site'
+            echo response.successful.toString()
+            echo response.data.toString()
+            
+            
         }
+        
+        
         
         
         
