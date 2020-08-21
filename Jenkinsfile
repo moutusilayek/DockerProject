@@ -20,7 +20,7 @@ pipeline {
          stage("Build Push image") {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhu') {
                             def customImage = docker.build("moutusilayek/mouimage")
                            customImage.push()
                     }
